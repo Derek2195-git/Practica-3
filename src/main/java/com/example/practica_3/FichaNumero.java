@@ -67,7 +67,7 @@ public class FichaNumero extends Pane {
         for (int i = 0; i < CUADRICULA; i++) {
             for (int j = 0; j < CUADRICULA; j++) {
                 Rectangle s = new Rectangle(tamCuadro, tamCuadro);
-                s.setFill(Color.WHITE);
+                s.setFill(Color.TRANSPARENT);
 
                 s.setX(j * (tamCuadro + ESPACIO));
                 s.setY(i * (tamCuadro + ESPACIO));
@@ -86,7 +86,7 @@ public class FichaNumero extends Pane {
                 agregarCuadroDibujo(2, 1);
                 agregarCuadroDibujo(2, 2);
                 agregarCuadroDibujo(2, 3);
-                cambiarColor("black");
+                cambiarColor("darkest_blue");
                 break;
             case 2:
 
@@ -126,7 +126,7 @@ public class FichaNumero extends Pane {
 
                 agregarCuadroDibujo(3,3);
                 agregarCuadroDibujo(3,4);
-                cambiarColor("cyan");
+                cambiarColor("teal");
                 break;
             case 5:
 
@@ -138,7 +138,7 @@ public class FichaNumero extends Pane {
                 agregarCuadroDibujo(3, 3);
 
                 agregarCuadroDibujo(1, 4); agregarCuadroDibujo(2, 4); agregarCuadroDibujo(3, 4);
-                cambiarColor("blue");
+                cambiarColor("light_green");
                 break;
             case 6:
 
@@ -150,7 +150,7 @@ public class FichaNumero extends Pane {
                 agregarCuadroDibujo(1,3); agregarCuadroDibujo(3,3);
 
                 agregarCuadroDibujo(1,4); agregarCuadroDibujo(2,4); agregarCuadroDibujo(3,4);
-                cambiarColor("purple");
+                cambiarColor("dark_green");
                 break;
             case 7:
 
@@ -160,7 +160,7 @@ public class FichaNumero extends Pane {
                 agregarCuadroDibujo(3,3);
 
                 agregarCuadroDibujo(3,4);
-                cambiarColor("pink");
+                cambiarColor("light_orange");
                 break;
             case 8:
 
@@ -172,7 +172,7 @@ public class FichaNumero extends Pane {
                 agregarCuadroDibujo(1,3); agregarCuadroDibujo(3,3);
 
                 agregarCuadroDibujo(1,4); agregarCuadroDibujo(2,4); agregarCuadroDibujo(3,4);
-                cambiarColor("magenta");
+                cambiarColor("orange");
                 break;
             case 9:
 
@@ -184,7 +184,7 @@ public class FichaNumero extends Pane {
                 agregarCuadroDibujo(3,3);
 
                 agregarCuadroDibujo(1,4); agregarCuadroDibujo(2,4); agregarCuadroDibujo(3,4);
-                cambiarColor("red");
+                cambiarColor("light_red");
                 break;
 
         }
@@ -195,12 +195,16 @@ public class FichaNumero extends Pane {
             case "red": return Color.RED;
             case "blue": return Color.BLUE;
             case "green": return Color.GREEN;
-            case "cyan": return Color.CYAN;
-            case "purple": return Color.PURPLE;
-            case "pink": return Color.PINK;
-            case "magenta": return Color.MAGENTA;
-            case "dark_blue": return Color.DARKBLUE;
+            case "teal": return Color.rgb(38, 222, 150);
+            case "darkest_blue": return Color.rgb(15, 2, 71);
+            case "dark_blue": return Color.rgb(50, 70, 168);
             case "darklight_blue": return Color.rgb(15,118,191);
+            case "light_gray": return Color.rgb(201, 201, 201);
+            case "dark_green": return Color.rgb(4, 194, 46);
+            case "light_green": return Color.rgb(47, 224, 112);
+            case "light_orange": return Color.rgb(191, 117, 13);
+            case "orange": return Color.rgb(252, 129, 71);
+            case "light_red": return Color.rgb(247, 64, 64);
             default: return Color.BLACK;
         }
     }
@@ -222,5 +226,11 @@ public class FichaNumero extends Pane {
         for (Rectangle s : dibujo) {
             s.setFill(colorACambiar);
         }
+    }
+
+    // Nuevas funciones de esta práctica
+    public void marcarFichaComoFija(boolean esFija) {
+        if (esFija) setStyle("-fx-background-color: #C9C9C9; -fx-border-color: black; -fx-border-width: 1px");
+        else setStyle("-fx-background-color: white; -fx-border-color: black; -fx-border-width: 1px");
     }
 }
