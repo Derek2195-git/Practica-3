@@ -1,3 +1,9 @@
+/* Fichas */
+.ficha-creada {
+    -fx-border-color: gray;
+    -fx-border-width: 2px;
+}
+
 
 /* estilo para el label */
 .label {
@@ -12,16 +18,19 @@
 .ficha-fija {
     -fx-background-color: #C9C9C9;
     -fx-border-color: gray;
+    -fx-border-width: 1px
 }
 
 .ficha-normal {
     -fx-background-color: white;
     -fx-border-color: gray;
+    -fx-border-width: 1px
 }
 
 .ficha-activa {
     -fx-background-color: #C2E5F2;
     -fx-border-color: gray;
+    -fx-border-width: 1px
 }
 
 /* estilos de los botones */

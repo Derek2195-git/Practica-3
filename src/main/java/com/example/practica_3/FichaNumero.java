@@ -16,7 +16,6 @@ public class FichaNumero extends Pane {
     private final int TAM_FICHA_TOTAL = 48;
     private final int ESPACIO = 0;
     private final int CUADRICULA = 5;
-
     private int tamCuadro;
 
     public FichaNumero(int valor, String color) {
@@ -28,7 +27,7 @@ public class FichaNumero extends Pane {
         tamCuadro = (TAM_FICHA_TOTAL - ((CUADRICULA - 1) * ESPACIO)) / CUADRICULA;
 
         setPrefSize(TAM_FICHA_TOTAL, TAM_FICHA_TOTAL);
-        setStyle("-fx-background-color: white; -fx-border-color: gray; -fx-border-width: 2px");
+        getStyleClass().add("ficha-creada");
         crearCuadricula();
         setValor(valor);
     }
@@ -43,7 +42,8 @@ public class FichaNumero extends Pane {
         tamCuadro = (TAM_FICHA_TOTAL - ((CUADRICULA - 1) * ESPACIO)) / CUADRICULA;
 
         setPrefSize(TAM_FICHA_TOTAL, TAM_FICHA_TOTAL);
-        setStyle("-fx-background-color: white; -fx-border-color: gray; -fx-border-width: 2px");
+
+        getStyleClass().add("ficha-creada");
         crearCuadricula();
         setValor(valor);
     }
@@ -61,7 +61,6 @@ public class FichaNumero extends Pane {
 
         crearFiguraNumero();
     }
-
 
     private void crearCuadricula() {
         for (int i = 0; i < CUADRICULA; i++) {
@@ -190,8 +189,8 @@ public class FichaNumero extends Pane {
         }
     }
 
-    public Color getColor(String newColor) {
-        switch(newColor) {
+    public Color getColor(String color) {
+        switch(color) {
             case "red": return Color.RED;
             case "blue": return Color.BLUE;
             case "green": return Color.GREEN;
@@ -228,9 +227,4 @@ public class FichaNumero extends Pane {
         }
     }
 
-    // Nuevas funciones de esta práctica
-    public void marcarFichaComoFija(boolean esFija) {
-        if (esFija) setStyle("-fx-background-color: #C9C9C9; -fx-border-color: black; -fx-border-width: 1px");
-        else setStyle("-fx-background-color: white; -fx-border-color: black; -fx-border-width: 1px");
-    }
 }
