@@ -1,0 +1,53 @@
+
+/* estilo para el label */
+.label {
+    -fx-font-size: 36px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #0F4C3B;
+    -fx-padding: 10, 0, 20, 0;
+}
+
+/* estilos para las fichas del tablero*/
+
+.ficha-fija {
+    -fx-background-color: #C9C9C9;
+    -fx-border-color: gray;
+}
+
+.ficha-normal {
+    -fx-background-color: white;
+    -fx-border-color: gray;
+}
+
+.ficha-activa {
+    -fx-background-color: #C2E5F2;
+    -fx-border-color: gray;
+}
+
+/* estilos de los botones */
+
+.boton-teclado {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-min-width: 50px;
+    -fx-min-height: 50px;
+    -fx-background-color: #88e3c8;
+    -fx-background-radius: 5px;
+}
+
+.boton-teclado:hover {
+    -fx-background-color: #57c99d;
+}
+
+.boton-control {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-min-width: 50px;
+    -fx-min-height: 50px;
+    -fx-background-color: #59dccd;
+    -fx-background-radius: 5px;
+}
+
+.boton-control:hover {
+    -fx-background-color: #2d8078;
+}

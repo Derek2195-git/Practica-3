@@ -5,11 +5,11 @@ import javafx.application.Application;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 
-import javafx.scene.control.TextInputDialog;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import java.io.IOException;
 
@@ -18,25 +18,36 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Alert;
 
 public class HelloApplication extends Application {
-    @Override
+    private FichaNumero fichaActiva = null;
+    private int filaActiva = -1;
+    private int columnaActiva = -1;
+    private FichaNumero[][] matrizJuego;
+
     public void start(Stage ventana) throws IOException {
 
         TableroSudoku tableroLogico = new TableroSudoku();
+        matrizJuego = new FichaNumero[9][9];
         tableroLogico.inicializarTablero();
 
+        Label labelTitulo = new Label("denme ideas no se me ocurre nada");
+        labelTitulo.getStyleClass().add("label");
+
         GridPane cuadricula = new GridPane();
-        cuadricula.setPadding(new Insets(20));
+        cuadricula.setPadding(new Insets(20, 20, 20, 20));
         cuadricula.setVgap(0);
         cuadricula.setHgap(0);
-
         cuadricula.setAlignment(Pos.CENTER);
+
+
         for(int i = 0; i < 9; i++) {
             for(int j = 0; j < 9; j++) {
 
                 int valor = tableroLogico.getValor(i, j);
                 boolean esFija = tableroLogico.esFija(i, j);
 
+
                 FichaNumero ficha = new FichaNumero(valor);
+                matrizJuego[i][j] = ficha;
                 ficha.marcarFichaComoFija(esFija);
 
                 final int filaActual = i;
@@ -50,69 +61,36 @@ public class HelloApplication extends Application {
                 // Si es el final de una subcuadrícula vertical (fila 2 o 5), borde inferior grueso
                 if (i == 2 || i == 5) bottom = 3;
 
-                String bordes = "-fx-border-color: gray; ";
+                if (esFija) {
+                    ficha.getStyleClass().add("ficha-fija");
+                } else {
+                    ficha.getStyleClass().add("ficha-normal");
+                }
                 String estiloBordes = String.format("-fx-border-width: %.0f %.0f %.0f %.0f; ", top, right, bottom, left);
 
-                String estiloBase = esFija ? "-fx-background-color: #C9C9C9; " : "-fx-background-color: white; ";
 
-                ficha.setStyle(estiloBase + bordes + estiloBordes);
+                ficha.setStyle(estiloBordes);
 
                 ficha.setOnMouseClicked(evento -> {
                     // Revisamos si la casilla es fija
-                    if (tableroLogico.esFija(filaActual, columnaActual)) {
-                        Alert ventanaInformacion = new Alert(Alert.AlertType.WARNING);
-                        ventanaInformacion.setTitle("Movimiento no permitido");
-                        ventanaInformacion.setHeaderText(null);
-                        ventanaInformacion.setContentText("Esta casilla es fija y no se puede modificar");
-                        ventanaInformacion.showAndWait();
-                        return;
-                    }
+                    if(tableroLogico.esFija(filaActual, columnaActual)) return;
 
-                    // Calabaza calabaza
-                    TextInputDialog dialogo = new TextInputDialog();
-                    dialogo.setTitle("Ingresar numero");
-                    dialogo.setHeaderText("Casilla seleccionada: Fila "+ filaActual + ", Columna " + columnaActual);
-                    dialogo.setContentText("Escribe un numero del 1 al 9");
-
-                    dialogo.showAndWait().ifPresent(respuesta -> {
-                        try {
-                            int numeroIngresado = Integer.parseInt(respuesta);
-
-                            if (numeroIngresado >= 1 && numeroIngresado <= 9) {
-                                if (tableroLogico.esUnMovimientoValido(filaActual, columnaActual, numeroIngresado)) {
-                                    tableroLogico.setValor(filaActual, columnaActual, numeroIngresado);
-                                    ficha.setValor(numeroIngresado);
-                                    ficha.marcarFichaComoFija(true);
-                                    if (tableroLogico.estaCompletada()) {
-                                        Alert posicionCapturada = new Alert(Alert.AlertType.INFORMATION);
-                                        posicionCapturada.setHeaderText("Sudoku Completado!");
-                                        String cadenaExito = "Dato valido capturado: " + numeroIngresado +
-                                                " en la posicion [" + filaActual + "][" + columnaActual + "]";
-                                        posicionCapturada.setContentText("Haz completado el sudoku!");
-                                        posicionCapturada.showAndWait();
-                                    }
-
-                                } else {
-                                    Alert alertaNumeroEquivocado = new Alert(Alert.AlertType.ERROR);
-                                    alertaNumeroEquivocado.setHeaderText("Número incorrecto");
-                                    alertaNumeroEquivocado.setContentText("El numero ingresado no es correcto");
-                                    alertaNumeroEquivocado.showAndWait();
-                                }
-
-                            } else {
-                                // Si el numero no esta en el rango
-                                Alert alertaRangoExcedido = new Alert(Alert.AlertType.ERROR);
-                                alertaRangoExcedido.setHeaderText("Número invalido");
-                                alertaRangoExcedido.setContentText("Por favor, ingresa numeros entre el rango del 1 al 9");
-                                alertaRangoExcedido.showAndWait();
-                            }
-                        } catch (NumberFormatException e) {
-                            Alert alertaDatoNoValido = new Alert(Alert.AlertType.ERROR);
-                            alertaDatoNoValido.setHeaderText("Formato de número no valido");
-                            alertaDatoNoValido.setContentText("No se pueden ingresar letras o simbolos, \ningresa solamente numeros.");
-                            alertaDatoNoValido.showAndWait();
+                    if (evento.getClickCount() == 1) {
+                        if (fichaActiva != null) {
+                            fichaActiva.getStyleClass().remove("ficha-activa");
+                            fichaActiva.getStyleClass().add("ficha-normal");
                         }
-                    });
+
+                        fichaActiva = ficha;
+                        filaActiva = filaActual;
+                        columnaActiva = columnaActual;
+
+                        fichaActiva.getStyleClass().remove("ficha-normal");
+                        fichaActiva.getStyleClass().add("ficha-activa");
+
+                        // Le pedimos al teclado que se enfoque en la ficha seleccionada
+                        ficha.requestFocus();
+                    }
                 });
 
                 cuadricula.add(ficha, j, i);
@@ -120,15 +98,107 @@ public class HelloApplication extends Application {
             }
         }
 
-        StackPane lienzo = new StackPane();
-        lienzo.getChildren().add(cuadricula);
+        // Teclado númerico para los botones del sudoku
 
-        StackPane.setAlignment(cuadricula, Pos.CENTER);
-        Scene escena = new Scene(lienzo, 800, 600);
+        GridPane panelBotones = new GridPane();
+        panelBotones.setAlignment(Pos.CENTER);
+        panelBotones.setHgap(10);
+        panelBotones.setVgap(10);
+
+        int numeroBoton = 1;
+        int factor = 2;
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                Button botonNumero = new Button(String.valueOf(numeroBoton));
+                // botonNumero.setPrefSize(40, 40);
+                botonNumero.getStyleClass().add("boton-teclado");
+
+                int numeroAIngresar = numeroBoton;
+                botonNumero.setOnMouseClicked(evento -> {
+                    if (fichaActiva != null) {
+                        ingresarNumero(tableroLogico, filaActiva, columnaActiva, numeroAIngresar, fichaActiva);
+                    }
+                });
+                panelBotones.add(botonNumero, i, j);
+                numeroBoton += 3;
+            }
+            numeroBoton = 1 * factor;
+            factor++;
+        }
+
+        Button botonBorrar = new Button("Borrar");
+        botonBorrar.getStyleClass().add("boton-teclado");
+
+        botonBorrar.setOnMouseClicked(evento -> {
+            if (fichaActiva != null) {
+                borrarNumero(tableroLogico, filaActiva, columnaActiva, fichaActiva);
+            }
+                });
+        panelBotones.add(botonBorrar, 0, 3, 3, 1);
+
+        HBox contenedorCentral = new HBox();
+        contenedorCentral.setAlignment(Pos.CENTER);
+        contenedorCentral.getChildren().addAll(cuadricula, panelBotones);
+
+        VBox contenedorVertical = new VBox();
+        contenedorVertical.setAlignment(Pos.CENTER);
+        contenedorVertical.getChildren().addAll(labelTitulo, contenedorCentral);
+
+        Scene escena = new Scene(contenedorVertical, 800, 600);
+        escena.getStylesheets().add(getClass().getResource("estilos.css").toExternalForm());
+        escena.setOnKeyTyped(evento -> {
+            if (fichaActiva != null) {
+                String teclaPulsada = evento.getCharacter();
+                if (teclaPulsada.matches("[1-9]")) {
+                    int numeroTeclado = Integer.parseInt(teclaPulsada);
+                    ingresarNumero(tableroLogico, filaActiva, columnaActiva, numeroTeclado, fichaActiva);
+                }
+            }
+        });
 
         ventana.setTitle("Práctica 3");
         ventana.setScene(escena);
         ventana.show();
+    }
+
+    private void actualizarGUI(TableroSudoku tablero) {
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                FichaNumero ficha = matrizJuego[i][j];
+                ficha.setValor(tablero.getValor(i, j));
+                ficha.marcarFichaComoFija(tablero.esFija(i, j));
+
+                ficha.getStyleClass().removeAll("ficha-fija", "ficha-normal", "ficha-activa");
+                if (tablero.esFija(i, j)) ficha.getStyleClass().add("ficha-fija");
+                else ficha.getStyleClass().add("ficha-normal");
+            }
+        }
+        fichaActiva = null;
+    }
+
+    private void borrarNumero(TableroSudoku tablero, int fila, int columna, FichaNumero ficha) {
+        tablero.setValor(fila, columna, 0);
+        ficha.setValor(0);
+    }
+
+    private void ingresarNumero(TableroSudoku tablero, int fila, int columna, int numero, FichaNumero ficha) {
+
+        if (tablero.esUnMovimientoValido(fila, columna, numero)) {
+            tablero.setValor(fila, columna, numero);
+            ficha.setValor(numero);
+
+            if (tablero.estaCompletada()) {
+                Alert sudokuCompletado = new Alert(Alert.AlertType.INFORMATION);
+                sudokuCompletado.setTitle("Juego completado!");
+                sudokuCompletado.setContentText("Has completado el Sudoku!");
+                sudokuCompletado.showAndWait();
+            }
+        } else {
+            Alert errorNumero = new Alert(Alert.AlertType.ERROR);
+            errorNumero.setTitle("Error!");
+            errorNumero.setContentText("El numero ingresado es erroneo, intenta con otro numero");
+            errorNumero.showAndWait();
+        }
     }
 
 }

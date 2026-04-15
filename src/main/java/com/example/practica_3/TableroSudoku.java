@@ -4,9 +4,8 @@ import java.util.Random;
 
 public class TableroSudoku {
     // Esta clase representará la lógica y el estado del tablero de Sudoku.
-
     private int[][] valoresTablero;
-    private int[][] matrizJuego;
+
     private boolean[][] casillasFijas;
     private final int[][][] TABLEROSRESUELTOS = {
             {
@@ -28,7 +27,6 @@ public class TableroSudoku {
 
     public TableroSudoku() {
         valoresTablero = new int[9][9];
-        matrizJuego = new int[9][9];
         casillasFijas = new boolean[9][9];
 
     }
@@ -61,6 +59,7 @@ public class TableroSudoku {
                 && verificarSubcuadricula(fila, columna, numero);
 
     }
+
 
     public boolean verificarFila(int fila, int numero) {
         for (int columna = 0; columna < 9; columna++) {
