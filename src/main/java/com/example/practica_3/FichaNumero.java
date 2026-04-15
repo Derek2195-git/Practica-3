@@ -5,45 +5,52 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import java.util.ArrayList;
 
-
+/**
+ * Esta clase invoca a una ficha de sudoku
+ *
+ * @autor Derek Ramón Garzón Vizcarra
+ * @version 15/04/26
+ */
 public class FichaNumero extends Pane {
+    // Valor de la ficha
     private int valor;
+    // Color de cada cuadro de la ficha
     private String color;
 
+    // Fondo o cuadricula 5x5 de una ficha
     private ArrayList<Rectangle> fondo;
+    // Cuadrados que muestran la silueta gráfica del valor
     private ArrayList<Rectangle> dibujo;
 
+    // Constantes
+    // Tamaño de la ficha en total, es de 48x48 px
     private final int TAM_FICHA_TOTAL = 48;
+    // Margen que hay entre cada ficha, en este caso puse el margen a 0
     private final int ESPACIO = 0;
+    // Numero de filas y columnas de la cuadricula
     private final int CUADRICULA = 5;
+    // Tamaño que va a tomar cada cuadrado tanto el fondo como el dibujo, se calcula
+    // diviviendo 48 / 5, lo que da mas o menos como 9 pixeles cada cuadrado
     private int tamCuadro;
 
-    public FichaNumero(int valor, String color) {
-        this.valor = valor;
-        this.color = color;
-        fondo = new ArrayList<>();
-        dibujo = new ArrayList<>();
-
-        tamCuadro = (TAM_FICHA_TOTAL - ((CUADRICULA - 1) * ESPACIO)) / CUADRICULA;
-
-        setPrefSize(TAM_FICHA_TOTAL, TAM_FICHA_TOTAL);
-        getStyleClass().add("ficha-creada");
-        crearCuadricula();
-        setValor(valor);
-    }
-
     public FichaNumero(int valor) {
-
+        // Inicializamos los valores
         this.valor = valor;
+        // Este color se va a cambiar automaticamente, pero lo dejamos con este valor por mientras
         color = "black";
+        // Inicializamos los ArrayLists
         fondo = new ArrayList<>();
         dibujo = new ArrayList<>();
-
+        // Calculamos el tamaño del cuadro
         tamCuadro = (TAM_FICHA_TOTAL - ((CUADRICULA - 1) * ESPACIO)) / CUADRICULA;
 
+        // Esto es de JavaFX, hacemos que el cuadro tome un tamaño de 48 x 48 px
         setPrefSize(TAM_FICHA_TOTAL, TAM_FICHA_TOTAL);
 
+        // Le añadimos un estilo de los creados en el css
         getStyleClass().add("ficha-creada");
+        // Esto ya es de la clase original, creamos la cuadricula de fondo, para despues asignar y
+        // dibujar el valor
         crearCuadricula();
         setValor(valor);
     }
@@ -55,9 +62,11 @@ public class FichaNumero extends Pane {
     public void setValor(int valor) {
         this.valor = valor;
 
+        // Getchildren() agarra todos los subnodos que tenga la cuadricula, y RemoveAll hace se eliminen todos
+        // Los subnodos
         getChildren().removeAll(dibujo);
+        // Limpiamos el arraylist
         dibujo.clear();
-
 
         crearFiguraNumero();
     }
@@ -73,11 +82,14 @@ public class FichaNumero extends Pane {
 
 
                 fondo.add(s);
+                // Getchildren() agarra todos los subnodos que tenga la cuadricula, y add hace que
+                // se agreguen nuevos subnodos, en este caso son los cuadrados
                 getChildren().add(s);
             }
         }
     }
 
+    // Lo de crearFiguraNumero() no se cambio en absoluto
     public void crearFiguraNumero() {
         switch (valor) {
             case 1:
@@ -189,6 +201,7 @@ public class FichaNumero extends Pane {
         }
     }
 
+    // Esta clase la usé para poder cambiar los colores de los cuadrados a mi elección
     public Color getColor(String color) {
         switch(color) {
             case "red": return Color.RED;
@@ -208,6 +221,8 @@ public class FichaNumero extends Pane {
         }
     }
 
+    // Esta clase crea una instancia de cuadrado, cambia su color y lo ubica en la columna y
+    // fila dada por el usuario
     private void agregarCuadroDibujo(int col, int fila) {
         Rectangle s = new Rectangle(tamCuadro, tamCuadro);
         // Crear getter
@@ -219,6 +234,7 @@ public class FichaNumero extends Pane {
         getChildren().add(s);
     }
 
+    // Esto es un setter para cambiar el color, solo que como es un poco más complejo no le puse ese nombre
     public void cambiarColor(String nuevoColor) {
 
         Color colorACambiar = getColor(nuevoColor);
