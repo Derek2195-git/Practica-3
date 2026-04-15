@@ -22,18 +22,7 @@ public class HelloApplication extends Application {
     public void start(Stage ventana) throws IOException {
 
         TableroSudoku tableroLogico = new TableroSudoku();
-        int[][] pruebasTablero = {
-                {8,7,0,0,0,0,0,0,5},
-                {1,3,9,5,6,8,4,2,7},
-                {0,0,0,1,9,7,6,8,3},
-                {4,5,3,9,2,6,8,7,1},
-                {2,6,7,0,0,0,3,4,9},
-                {9,1,8,4,7,3,2,5,6},
-                {7,9,4,6,8,5,1,3,2},
-                {6,2,1,7,3,4,0,9,8},
-                {3,8,5,0,1,9,7,6,4}
-        };
-        tableroLogico.cargarTableroInicial(pruebasTablero);
+        tableroLogico.inicializarTablero();
 
         GridPane cuadricula = new GridPane();
         cuadricula.setPadding(new Insets(20));
